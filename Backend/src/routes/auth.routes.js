@@ -7,10 +7,12 @@ const {
 
 const router = express.Router();
 const protect = require("../middleware/auth.middleware");
-
+const authorize = require("../middleware/role.middleware");
 
 router.post("/signup", signup);
+
 router.post("/login", login);
+
 router.get(
   "/profile",
   protect,
@@ -19,6 +21,20 @@ router.get(
     res.json({
       success: true,
       user: req.user
+    });
+
+  }
+);
+
+router.get(
+  "/admin-dashboard",
+  protect,
+  authorize("admin"),
+  (req, res) => {
+
+    res.json({
+      success: true,
+      message: "Welcome Admin"
     });
 
   }
